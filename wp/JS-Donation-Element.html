@@ -1,0 +1,105 @@
+<script type="text/javascript">
+    (function($){
+        var giftaid_switch = '<input type="checkbox" name="gift_aid_switch" id="gift_aid_switch" aria-controls="gift_aid_fields" aria-expanded="false" /><label for="gift_aid_switch">'+$('#gift_aid').data('switch-text')+'</label>';
+        $('#gift_aid').html(giftaid_switch);
+        $('#gift_aid_fields').addClass('hidden');
+        $(document).on('click', '#gift_aid_switch', function(){
+            if ($(this).is(':checked')) {
+                $('#gift_aid_switch').attr('aria-expanded',true);
+                $('#gift_aid_fields').removeClass('hidden').attr('aria-hidden',false);
+                $('#gift_aid_confirm,#address,#postcode').attr('tabindex',0);
+            } else {
+                $('#gift_aid_switch').attr('aria-expanded',false);
+                $('#gift_aid_fields').addClass('hidden').attr('aria-hidden',true);
+                $('#address,#postcode').val('');
+                $('#gift_aid_confirm').prop('checked',false);
+                $('#gift_aid_confirm,#address,#postcode').attr('tabindex',-1);
+            }
+        });
+        var clearForm = function(){
+            // reset form
+            $('form.application_form').trigger('reset');
+            // reset gift aid expando
+            $('#gift_aid').attr('aria-expanded',false);
+            $('#gift_aid_fields').addClass('hidden').attr('aria-hidden',true);
+            $('#address,#postcode').val('');
+            $('#address,#postcode').removeClass('error');
+            $('#address,#postcode').parents('p').find('.error_text').addClass('hidden');
+            $('#gift_aid_confirm').prop('checked',false);
+            $('#gift_aid_confirm,#address,#postcode').attr('tabindex',-1);
+        };
+        var checkForm = function(){
+            // Clear any previous errors
+            $('span.error_text').addClass('hidden');
+            $('input textarea select').removeClass('error');
+            // Check name
+            if ( $.trim($('#first_name').val()) === '' ){
+                $('#first_name').addClass('error').parents('p').find('.error_text').removeClass('hidden');
+            }
+            if ( $.trim($('#last_name').val()) === '' ){
+                $('#last_name').addClass('error').parents('p').find('.error_text').removeClass('hidden');
+            }
+            // Check email
+            var emailRE = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/;
+            if (!$.trim($('#emailaddress').val()).match(emailRE)){
+                $('#emailaddress').val('');
+            }
+            if ( $.trim($('#emailaddress').val()) === '' ){
+                $('#emailaddress').addClass('error').parents('p').find('.error_text').removeClass('hidden');
+            }
+            // If Gift Aid is being used, check confirmation
+            if ($('#gift_aid_switch').is(':checked')){
+                // Check address
+                if ( $.trim($('#address').val()) === '' ){
+                    $('#address').addClass('error').parents('p').find('.error_text').removeClass('hidden');
+                }
+                if ( $.trim($('#postcode').val()) === '' ){
+                    $('#postcode').addClass('error').parents('p').find('.error_text').removeClass('hidden');
+                }
+                // make sure confirmation is checked
+                if(!$('#gift_aid_confirm').is(':checked')){
+                    $('#gift_aid_confirm').addClass('error');
+                    $('#gift_aid_confirm').parents('p').find('.error_text').removeClass('hidden');
+                }
+            }
+            if (!$('.error').length) {
+                return true;
+            } else {
+                window.scrollTo(0,($('.error').first().offset().top-100));
+                return false;
+            }
+        };
+        // remove the error condition for a field when it gets focus
+        $('input[type=text],input[type=email],textarea,select').on('focus', function(){
+            if ( $(this).hasClass('error') ) {
+                $(this).removeClass('error');
+                $(this).parents('p').find('.error_text').addClass('hidden');
+            }
+        });
+        // remove the error condition for the gift aid checkbox when it gets focus
+        $('#gift_aid_confirm').on('focus',function(){
+            $('#gift_aid_confirm').removeClass('error');
+            $('#gift_aid_confirm').parents('p').find('.error_text').addClass('hidden');
+        });
+        // form submission
+        $('#donate').on('click',function(e){
+            if ( ! checkForm() ) {
+                e.preventDefault();
+            } else {
+                // append the overlay
+                var paypal_url = 'https://www.paypal.com/donate/?hosted_button_id='+$('#hosted_button_id').val();
+                $('.application_form').addClass('hidden');
+                $('body').append('<div class="application-form-overlay" id="application-form-overlay"><div id="application-form-overlay_text" class="text"><p>Sending your details</p><p>If you are not redirected to the PayPal website in a few seconds, <a href="'+paypal_url+'">please follow this link</a>.</p><div class="application-form-loader_container"><div class="application-form-loader"></div></div></div></div>');
+                $(document).on('wpcf7mailsent', function(e){
+                    window.location = paypal_url;
+                });
+                // invalid input found in form
+                $(document).on('wpcf7invalid', function(e){
+                });
+                // message not sent
+                $(document).on('wpcf7mailfailed', function(){
+                });
+            }
+        });
+    })(jQuery);
+    </script>

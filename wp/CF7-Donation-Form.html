@@ -1,0 +1,46 @@
+[submission_id_hidden submission_id id:submission_id]
+[hidden hosted_button_id id:hosted_button_id "GVZN3JGMVFHMU"]
+<div class="application_form">
+	<fieldset id="your_details_fields"><legend>Your Details</legend>
+		<p>
+			<label for="first_name" class="required">First name(s)</label>
+			[text* first_name id:first_name autocomplete:given-name]
+			<span class="error_text hidden">Please enter your first name.</span>
+		</p>
+		<p>
+			<label for="last_name" class="required">Surname</label>
+			[text* last_name id:last_name autocomplete:family-name]
+			<span class="error_text hidden">Please enter your surname.</span>
+		</p>
+		<p>
+			<label for="emailaddress" class="required">Email address</label>
+			[email* emailaddress id:emailaddress autocomplete:email]
+			<span class="error_text hidden">Please enter your email address</span>
+		</p>
+
+	</fieldset>
+	<p>
+		<label for="existing_member"><input type="checkbox" name="existing_member" id="existing_member" value="Yes"> Check this box if you are a member of Friends of the Dales</label>
+	</p>
+	<p id="gift_aid" data-switch-text="Check this box if you wish to Gift Aid your payment">If you wish to Gift Aid your membership payment, please read the following declaration and confirm your choice by checking the box</p>
+	<fieldset id="gift_aid_fields"><legend>Gift Aid Declaration</legend>
+		<p>I want to Gift aid my membership payment and / or donations I make now, in the future or have made in the last four years to the Yorkshire Dales Society - the charity of the Friends of the Dales. I am a UK taxpayer and understand that if I pay less Income Tax and / or Capital Gaints Tax than the amount of the Gift Aid claimed on all my donations in that tax year, it is my responsibility to pay the difference.</p>
+		<p>Please notify Friends of the Dales if you want to cancel this declaration, or change your name or home address, or no longer pay sufficient tax on your income and/or capital gains.</p>
+		<p>If you pay Income Tax at the higher or additional rate and want to receive the additional relief due to you, you must include all your Gift Aid donations on your Self Assessment tax return or ask HM Revenue and Customs to adjust your tax code.</p>
+		<p>
+			<label for="address" class="required">Address</label>
+			[textarea* address id:address autocomplete:street-address]
+			<span class="error_text hidden">Please enter your address.</span>
+		</p>
+		<p>
+			<label for="postcode" class="required">Postcode</label>
+			[text postcode id:postcode autocomplete:postal-code]
+			<span class="error_text hidden">Please enter your postcode.</span>
+		</p>
+		<p>[acceptance gift_aid_confirm id:gift_aid_confirm optional]I confirm I have read this declaration and agree[/acceptance]<br><span class="error_text indent hidden">Please confirm you agree to the Gift Aid declaration.</span></p>
+		
+	</fieldset>
+	<p>
+		[submit id:donate class:donate "Make a Donation"]
+	</p>
+</div>
