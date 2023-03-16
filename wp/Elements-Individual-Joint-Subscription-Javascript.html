@@ -49,13 +49,18 @@
         });
         $('#jointname_field,#groupname_field').addClass('hidden');
         $('#membership_category').on('change', function(){
-            $('#jointname_field,#groupname_field').addClass('hidden');
-					  $('#jointname,#groupname').val('');
             var mcat = $('#membership_category').val();
-            var mcat_split = mcat.split(" ");
-            var mcat_key = mcat_split[0].toLowerCase();
-            if (mcat_key !== 'select') {
-                $('#'+mcat_key+'name_field').removeClass('hidden error').parents('p').find('.error_text').addClass('hidden');
+            if ( mcat.indexOf( 'Joint' ) !== -1 ) {
+                $('#jointname_field').removeClass('hidden error').parents('p').find('.error_text').addClass('hidden');
+            } else {
+                $('#jointname_field').addClass('hidden');
+			    $('#jointname').val('');
+            }
+            if ( mcat.indexOf( 'Life' ) !== -1 ) {
+                $('#lifemembership-contact').addClass('hidden');
+                $('#contact_life_membership').checked = false;
+            } else {
+                $('#lifemembership-contact').removeClass('hidden');
             }
         });
         var clearForm = function(){
@@ -129,14 +134,10 @@
                 }
             }
             var mcat = $('#membership_category').val();
-            var mcat_split = mcat.split(" ");
-            var mcat_key = mcat_split[0].toLowerCase();
-            if (mcat_key === 'select') {
+            if ( mcat.indexOf( 'Select' ) !== -1 ) {
                 $('#membership_category').addClass('error').parents('p').find('.error_text').removeClass('hidden');
-            } else if (mcat_key === 'joint' && $.trim($('#jointname').val()) === '' ) {
+            } else if (mcat.indexOf( 'Joint' ) !== -1 && $.trim($('#jointname').val()) === '' ) {
                 $('#jointname').addClass('error').parents('p').find('.error_text').removeClass('hidden');
-            } else if (mcat_key === 'group' && $.trim($('#groupname').val()) === '' ) {
-                $('#groupname').addClass('error').parents('p').find('.error_text').removeClass('hidden');
             }
             var paym = $('#payment_method').val();
             var paym_split = paym.split(" ");
@@ -176,6 +177,8 @@
                         'submission_id': 0,
                         'paypal_email': '',
                         'paypal_button_text': '',
+                        'paypal_return_url': '',
+                        'paypal_cancel_return_url': '',
                         'payment_method': '',
                         'membership_category': '',
                         'thankyou_title': '',
@@ -183,14 +186,17 @@
                     },
                     payment_info_text = {},
                     memberships = {
-                        'individual': { 'fee':25, 'name': 'Freinds of the Dales Individual Annual Membership' },
-                        'joint': { 'fee':35, 'name': 'Freinds of the Dales Joint Annual Membership' },
-                        'group':{ 'fee':40, 'name': 'Freinds of the Dales Group / Business Annual Membership' },
+                        'Individual (£25)': { 'fee': 25, 'name': 'Freinds of the Dales Individual Annual Membership' },
+                        'Joint (two Friends at the same address) £35': { 'fee': 35, 'name': 'Freinds of the Dales Joint Annual Membership' },
+                        'Life Membership - Individual (£400)': { 'fee': 400, 'name': 'Freinds of the Dales Individual Life Membership' },
+                        'Life Membership - Joint (£550)': { 'fee': 550, 'name': 'Freinds of the Dales Joint Life Membership' },
+                        'Life Membership (over 60) Individual (£300)': { 'fee': 300, 'name': 'Freinds of the Dales Individual Life Membership (over 60)' },
+                        'Life Membership (over 60) Joint (£450)': { 'fee': 450, 'name': 'Freinds of the Dales Joint Life Membership (over 60)' },
                     };
                     for ( var i = 0; i < e.detail.inputs.length; i++ ) {
                         for ( fieldname in formdata ) {
                             if ( fieldname == e.detail.inputs[i].name ) {
-                                if ( 'payment_method' == fieldname || 'membership_category' == fieldname ) {
+                                if ( 'payment_method' == fieldname ) {
                                     var val_split = e.detail.inputs[i].value.split(" ");
                                     formdata[fieldname] = val_split[0].toLowerCase();
                                 } else {
@@ -205,6 +211,7 @@
                     var paypal_form = '';
                     paypal_form += '<'+'fo'+'rm action="https://www.paypal.com/cgi-bin/webscr" method="post">';
                     paypal_form += '<input type="hidden" name="business" value="'+formdata.paypal_email+'">';
+                    paypal_form += '<input type="hidden" name="charset" value="utf-8">';
                     paypal_form += '<input type="hidden" name="cmd" value="_xclick">';
                     paypal_form += '<input type="hidden" name="item_name" value="'+memberships[formdata.membership_category].name+'">';
                     paypal_form += '<input type="hidden" name="item_number" value="'+formdata.submission_id+'">';
@@ -214,8 +221,8 @@
                     paypal_form += '<input type="hidden" name="shipping" value="">';
                     paypal_form += '<input type="hidden" name="shipping2" value="">';
                     paypal_form += '<input type="hidden" name="handling" value="">';
-                    paypal_form += '<input type="hidden" name="return" value="">';
-                    paypal_form += '<input type="hidden" name="cancel_return" value="">';
+                    paypal_form += '<input type="hidden" name="return" value="'+formdata.paypal_return_url+'">';
+                    paypal_form += '<input type="hidden" name="cancel_return" value="'+formdata.paypal_cancel_return_url+'">';
                     paypal_form += '<input type="hidden" name="undefined_quantity" value="0">';
                     paypal_form += '<input type="hidden" name="receiver_email" value="'+formdata.paypal_email+'">';
                     paypal_form += '<input type="hidden" name="no_shipping" value="0">';

@@ -1,7 +1,7 @@
 [submission_id_hidden submission_id id:submission_id]
-[hidden paypal_email id:paypal_email "ann.shadrake@yds.org.uk"]
+[hidden paypal_email id:paypal_email "ann.shadrake@friendsofthedales.org.uk"]
 [hidden paypal_return_url id:paypal_return_url "https://friendsofthedales.org.uk/thanks/"]
-[hidden paypal_cancel_return_url id:paypal_cancel_return_url "https://friendsofthedales.org.uk/"]
+[hidden paypal_cancel_return_url id:paypal_cancel_return_url "https://friendsofthedales.org.uk/support-us/subscribe"]
 [hidden paypal_button_text id:paypal_button_text "Pay using PayPal"]
 [hidden thankyou_title id:thankyou_title "Thank You!"]
 [hidden thankyou_text id:thankyou_text "We have received your application for membership."]
@@ -72,18 +72,13 @@
 		[radio membership_type id:membership_type use_label_element default:1 "New" "Renewal"]
 		<p>
 			<label for="membership_category" class="required">Membership Category</label>
-			[select* membership_category id:membership_category "Select your membership category..." "Individual (£25)" "Joint (two Friends at the same address) £35" "Group / Business (£40)"]
+			[select* membership_category id:membership_category "Select your membership category..." "Individual (£25)" "Joint (two Friends at the same address) £35" "Life Membership - Individual (£400)" "Life Membership - Joint (£550)" "Life Membership (over 60) Individual (£300)" "Life Membership (over 60) Joint (£450)"]
 			<span class="error_text hidden">Please select a Membership Category.</span>
 		</p>
 		<p class="hidden" id="jointname_field">
 			<label for="jointname" class="required">Title, first name and surname of joint member</label>
 			[text jointname id:jointname]
 			<span class="error_text hidden">Please enter a name for the joint member.</span>
-		</p>
-		<p class="hidden" id="groupname_field">
-			<label for="groupname" class="required">Group / Business Name</label>
-			[text groupname id:groupname]
-			<span class="error_text hidden">Please enter a name for the Group / Business.</span>
 		</p>
 	</fieldset>
 	<fieldset id="payment_fields"><legend>Payment</legend>
@@ -95,10 +90,10 @@
 		<p class="hidden" id="method_info_text"></p>
 	</fieldset>
 	<fieldset><legend>Contact Preferences</legend>
-		<p>
+		<p id="lifemembership-contact">
 			[acceptance contact_life_membership id:contact_life_membership optional]Check this box if you want us to send you information on Life membership[/acceptance]
 		</p>
-		<p>
+		<p id="legacies-contact">
 			[acceptance contact_legacies id:contact_legacies optional]Check this box if you want us to send you information on Legacies[/acceptance]
 		</p>
 	</fieldset>

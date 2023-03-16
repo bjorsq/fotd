@@ -1,0 +1,102 @@
+[submission_id_hidden submission_id id:submission_id]
+[hidden paypal_email id:paypal_email "ann.shadrake@friendsofthedales.org.uk"]
+[hidden paypal_return_url id:paypal_return_url "https://friendsofthedales.org.uk/thanks/"]
+[hidden paypal_cancel_return_url id:paypal_cancel_return_url "https://friendsofthedales.org.uk/support-us/subscribe"]
+[hidden paypal_button_text id:paypal_button_text "Pay using PayPal"]
+[hidden thankyou_title id:thankyou_title "Thank You!"]
+[hidden thankyou_text id:thankyou_text "We have received your application for membership."]
+[hidden payment_info_text_paypal id:payment_info_text_paypal "Please click on the button below to be redirected to the PayPal website where you can pay your subscription fee."]
+[hidden payment_info_text_bank id:payment_info_text_bank "Our banking details will be included in your acknowledgement email."]
+[hidden payment_info_text_direct id:payment_info_text_direct "We will send you details of how to set up a Direct Debit payment in your acknowledgement email."]
+[hidden payment_info_text_cheque id:payment_info_text_cheque "We will send you the address to post cheques to in your acknowledgement email."]
+[hidden payment_info_text_telephone id:payment_info_text_telephone "We will let you know how to contact us to make your payment using a Credit/Debit card over the telephone."]
+<div class="application_form">
+	<fieldset id="your_details_fields"><legend>Organisation Details</legend>
+		<p>
+			<label for="organisation_name" class="required">Organisation Name</label>
+			[text* organisation_name id:organisation_name]
+		</p>
+        <p>
+            <label for="organisation_url">Primary online presence e.g. website; social media page</label>
+            [url organisation_url id:organisation_url]
+        </p>
+		<p>
+			<label for="organisation_address" class="required">Organisation Address</label>
+			[textarea* organisation_address id:organisation_address autocomplete:street-address]
+			<span class="error_text hidden">Please enter the Organisation's address.</span>
+		</p>
+		<p>
+			<label for="organisation_postcode" class="required">Organisation Postcode</label>
+			[text* organisation_postcode id:organisation_postcode autocomplete:postal-code]
+			<span class="error_text hidden">Please enter the Organisation's postcode.</span>
+		</p>
+    </fieldset>
+    <fieldset id="contact_details_fields"><legend>Contact Details</legend>
+            <p>
+			<label for="title">Title</label>
+			[text title id:title]
+		</p>
+		<p>
+			<label for="first_name" class="required">First name(s)</label>
+			[text* first_name id:first_name autocomplete:given-name]
+			<span class="error_text hidden">Please enter the organisation contact's first name.</span>
+		</p>
+		<p>
+			<label for="last_name" class="required">Surname</label>
+			[text* last_name id:last_name autocomplete:family-name]
+			<span class="error_text hidden">Please enter the organisation contact's surname.</span>
+		</p>
+		<p>
+			<label for="last_name" class="required">Job title</label>
+			[text* job_title id:job_title]
+			<span class="error_text hidden">Please enter the organisation contact's job title.</span>
+		</p>
+		<p>
+			<label for="emailaddress" class="required">Email address</label>
+			[email* emailaddress id:emailaddress autocomplete:email]
+			<span class="error_text hidden">Please enter the organisation contact's email address</span>
+		</p>
+		<p>
+			<label for="telephone">Telephone number</label>
+			[tel telephone id:telephone autocomplete:tel]
+		</p>
+	</fieldset>
+	<fieldset><legend>Membership</legend>
+        <p id="agreeobjectives">
+            [acceptance* agree_objectives id:contact_life_membership optional]I confirm this organisation supports the charitable objectives of the Freinds of the Dales[/acceptance]
+        </p>
+        <p class="required">Membership type</p>
+		[radio membership_type id:membership_donation use_label_element default:1 "New" "Renewal"]
+		<p>
+			<label for="membership_category" class="required">Membership Donation</label>
+			[select* membership_category id:membership_category "Select your membership donation..." "£40" "£75" "£100" "Other (enter below)"]
+			<span class="error_text hidden">Please select a Membership Donatioon amount.</span>
+		</p>
+		<p id="membership-donation-other">
+			<label for="membership_donation_other" class="required">Membership Donation</label>
+			£[number membership_donation_other id:membership_donation_other min:40].00
+			<span class="error_text hidden">Please input your Membership Donation.</span>
+		</p>
+        <fieldset><legend>Publication Preferences</legend>
+            <p>I would like:</p>
+            <p>
+                [acceptance publication_pdf id:publication_pdf optional]A PDF copy of quarterly magazine, Yorkshire Dales Review sent to my email[/acceptance]
+            </p>
+            <p>
+                [acceptance publication_pprint id:publication_print optional]A printed copy of quarterly magazine, Yorkshire Dales Review sent by post[/acceptance]
+            </p>
+            <p id="publication_additional">
+                [acceptance publication_additional_copy id:publication_additional_copy optional]Please send me an additional printed copy of quarterly magazine[/acceptance]
+            </p>
+        </fieldset>
+        <fieldset>
+            <p>
+                <label for="howdidyouhear">How did you hear about Friends of the Dales?</label>
+                [text howdidyouhear id:howdidyouhear]
+            </p>
+        </fieldset>
+        <p>
+            [submit id:apply class:apply "Apply for Community membership"]
+        </p>
+    </div>
+
