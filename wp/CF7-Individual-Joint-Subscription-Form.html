@@ -10,7 +10,7 @@
 [hidden payment_info_text_direct id:payment_info_text_direct "We will send you details of how to set up a Direct Debit payment in your acknowledgement email."]
 [hidden payment_info_text_cheque id:payment_info_text_cheque "We will send you the address to post cheques to in your acknowledgement email."]
 [hidden payment_info_text_telephone id:payment_info_text_telephone "We will let you know how to contact us to make your payment using a Credit/Debit card over the telephone."]
-<div class="application_form">
+<div class="application_form individual-subscription">
 	<fieldset id="your_details_fields"><legend>Your Details</legend>
 		<p>
 			<label for="title">Title</label>
@@ -38,7 +38,7 @@
 		</p>
 		<p>
 			<label for="postcode" class="required">Postcode</label>
-			[text postcode id:postcode autocomplete:postal-code]
+			[text* postcode id:postcode autocomplete:postal-code]
 			<span class="error_text hidden">Please enter your postcode.</span>
 		</p>
 		<p>
@@ -84,7 +84,7 @@
 	<fieldset id="payment_fields"><legend>Payment</legend>
 		<p>
 			<label for="payment_method" class="required">Payment method</label>
-			[select payment_method id:payment_method "Select your preferred payment method..." "PayPal" "Bank Transfer" "Direct Debit" "Cheque" "Telephone"]
+			[select* payment_method id:payment_method "Select your preferred payment method..." "PayPal" "Bank Transfer" "Direct Debit" "Cheque" "Telephone"]
 			<span class="error_text hidden">Please select a Payment method.</span>
 		</p>
 		<p class="hidden" id="method_info_text"></p>

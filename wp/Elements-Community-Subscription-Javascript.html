@@ -1,0 +1,199 @@
+<script type="text/javascript">
+    (function($){
+        $('#payment_method').on('change',function(){
+            $('#method_info_text').addClass('hidden');
+            var method = $('#payment_method').val();
+            var method_split = method.split(" ");
+            var method_key = method_split[0].toLowerCase();
+            if (method_key !== 'select') {
+                $(this).removeClass('error');
+                $('#method_info_text').text($('#payment_info_text_'+method_key).val()).removeClass('hidden');
+            }
+        });
+        $('#membership_subscription_other').parents('p').addClass( 'hidden' );
+        $('#membership_subscription').on('change', function(){
+            console.log($(this).val());
+            console.log($(this).val().indexOf( 'Other' ));
+            if ( $(this).val().indexOf( 'Other' ) !== -1 ) {
+                $('#subscription_other').removeClass( 'hidden' ).find( '.error_text' ).addClass('hidden');
+                $('#membership_subscription_other').removeClass('error').focus();
+            } else {
+                $('#membership_subscription_other').val( '40' );
+                $('#subscription_other').addClass( 'hidden' );
+            }
+        });
+        $('#publication_additional').addClass( 'hidden' );
+        $('#publication_print').on( 'click', function(){
+            if ( $('#publication_print').is( ':checked' ) ) {
+                $('#publication_additional').removeClass( 'hidden' );
+            } else {
+                $('#publication_additional_copy').prop('checked', false);
+                $('#publication_additional').addClass( 'hidden' );
+            }
+        });
+        var clearForm = function(){
+            // reset form
+            $('form.application_form').trigger('reset');
+            // hide info text about payment methods
+            $('#method_info_text').addClass('hidden').attr('aria-hidden',true);
+            // hide errors
+            $( 'span.error_text' ).addClass( 'hidden' );
+        };
+        var checkForm = function(){
+            // Clear any previous errors
+            $('span.error_text').addClass('hidden');
+            $('input textarea select').removeClass('error');
+            // Check Organisation
+            if ( $.trim($('#organisation_name').val()) === '' ){
+                $('#organisation_name').addClass('error').parents('p').find('.error_text').removeClass('hidden');
+            }
+            // Check Organisation address
+            if ( $.trim($('#organisation_address').val()) === '' ){
+                $('#organisation_address').addClass('error').parents('p').find('.error_text').removeClass('hidden');
+            }
+            if ( $.trim($('#organisation_postcode').val()) === '' ){
+                $('#organisation_postcode').addClass('error').parents('p').find('.error_text').removeClass('hidden');
+            }
+
+            // Check name
+            if ( $.trim($('#first_name').val()) === '' ){
+                $('#first_name').addClass('error').parents('p').find('.error_text').removeClass('hidden');
+            }
+            if ( $.trim($('#last_name').val()) === '' ){
+                $('#last_name').addClass('error').parents('p').find('.error_text').removeClass('hidden');
+            }
+            if ( $.trim($('#job_title').val()) === '' ){
+                $('#job_title').addClass('error').parents('p').find('.error_text').removeClass('hidden');
+            }
+            // Check email
+            var emailRE = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/;
+            if (!$.trim($('#emailaddress').val()).match(emailRE)){
+                $('#emailaddress').val('');
+            }
+            if ( $.trim($('#emailaddress').val()) === '' ){
+                $('#emailaddress').addClass('error').parents('p').find('.error_text').removeClass('hidden');
+            }
+            // Check subscription
+            var mdon = $('#membership_subscription').val();
+            if ( mdon.indexOf( 'Select' ) !== -1 ) {
+                $('#membership_subscription').addClass('error').parents('p').find('.error_text').removeClass('hidden');
+            } else if (mcat.indexOf( 'Other' ) !== -1 ) {
+                var otheramount = parseInt( $('#membership_subscription_other').val().replace('£', '') );
+                if ( isNaN( otheramount ) || otheramount < 40 ) {
+                    $('#membership_subscription_other').addClass('error').parents('p').find('.error_text').removeClass('hidden');
+                }
+            }
+            var paym = $('#payment_method').val();
+            var paym_split = paym.split(" ");
+            var paym_key = paym_split[0].toLowerCase();
+            if ( paym_key === 'select' ){
+                $('#payment_method').addClass('error').parents('p').find('.error_text').removeClass('hidden');
+            }
+            if (!$('.error').length) {
+                return true;
+            } else {
+                window.scrollTo(0,($('.error').first().offset().top-100));
+                return false;
+            }
+        };
+        // remove the error condition for a field when it gets focus
+        $('input[type=text],input[type=email],input[type=url],input[type=tel],textarea,select').on('focus', function(){
+            if ( $(this).hasClass('error') ) {
+                $(this).removeClass('error');
+                $(this).parents('p').find('.error_text').addClass('hidden');
+            }
+        });
+        // form submission
+        $('#apply').on('click',function(e){
+            if ( ! checkForm() ) {
+                e.preventDefault();
+            } else {
+                // append the overlay
+                $('body').append('<div class="application-form-overlay" id="application-form-overlay"><div id="application-form-overlay_text" class="text"><p>Sending your details</p><div class="application-form-loader_container"><div class="application-form-loader">Loading...</div></div></div></div>');
+                // mail sent OK listener
+                $(document).on('wpcf7mailsent', function(e){
+                    var formdata = {
+                        'submission_id': 0,
+                        'paypal_email': '',
+                        'paypal_button_text': '',
+                        'paypal_return_url': '',
+                        'paypal_cancel_return_url': '',
+                        'payment_method': '',
+                        'membership_type': '',
+                        'membership_subscription': '',
+                        'membership_subscription_other': '',
+                        'thankyou_title': '',
+                        'thankyou_text': '',
+                    },
+                    payment_info_text = {};
+                    for ( var i = 0; i < e.detail.inputs.length; i++ ) {
+                        for ( fieldname in formdata ) {
+                            if ( fieldname == e.detail.inputs[i].name ) {
+                                if ( 'payment_method' == fieldname ) {
+                                    var val_split = e.detail.inputs[i].value.split(" ");
+                                    formdata[fieldname] = val_split[0].toLowerCase();
+                                } else {
+                                    formdata[fieldname] = e.detail.inputs[i].value;
+                                }
+                            }
+                        }
+                        if ( e.detail.inputs[i].name.indexOf('payment_info_text') === 0 ) {
+                            payment_info_text[e.detail.inputs[i].name.substring(18)] = e.detail.inputs[i].value;
+                        }
+                    }
+                    var subscription = 0;
+                    if (formdata.membership_subscription.indexOf( 'Other' ) !== -1 ) {
+                        subscription = parseInt( formdata.membership_subscription_other );
+                    } else {
+                        subscription = parseInt( formdata.membership_subscription.replace('£', '') );
+                    }
+                    if ( isNaN( subscription ) || subscription < 40 ) {
+                        subscription = 40;
+                    }
+
+                    var paypal_form = '';
+                    paypal_form += '<'+'fo'+'rm action="https://www.paypal.com/cgi-bin/webscr" method="post">';
+                    paypal_form += '<input type="hidden" name="business" value="'+formdata.paypal_email+'">';
+                    paypal_form += '<input type="hidden" name="charset" value="utf-8">';
+                    paypal_form += '<input type="hidden" name="cmd" value="_xclick">';
+                    paypal_form += '<input type="hidden" name="item_name" value="Community Membership Subscription - ' + formdata.membership_type + '">';
+                    paypal_form += '<input type="hidden" name="item_number" value="'+formdata.submission_id+'">';
+                    paypal_form += '<input type="hidden" name="amount" value="'+subscription+'">';
+                    paypal_form += '<input type="hidden" name="tax" value="0">';
+                    paypal_form += '<input type="hidden" name="currency_code" value="GBP">';
+                    paypal_form += '<input type="hidden" name="shipping" value="">';
+                    paypal_form += '<input type="hidden" name="shipping2" value="">';
+                    paypal_form += '<input type="hidden" name="handling" value="">';
+                    paypal_form += '<input type="hidden" name="return" value="'+formdata.paypal_return_url+'">';
+                    paypal_form += '<input type="hidden" name="cancel_return" value="'+formdata.paypal_cancel_return_url+'">';
+                    paypal_form += '<input type="hidden" name="undefined_quantity" value="0">';
+                    paypal_form += '<input type="hidden" name="receiver_email" value="'+formdata.paypal_email+'">';
+                    paypal_form += '<input type="hidden" name="no_shipping" value="0">';
+                    paypal_form += '<input type="hidden" name="no_note" value="1">';
+                    paypal_form += '<button type="submit" title="'+formdata.paypal_button_text+'" class="paypal-button">'+formdata.paypal_button_text+'</button>';
+                    paypal_form += '</'+'fo'+'rm>';
+                    overlay_text = '<h3>'+formdata.thankyou_title+'</h3><p>'+formdata.thankyou_text+'</p>';
+                    overlay_text += '<p>'+payment_info_text[formdata.payment_method]+'</p>';
+                    // if PayPal is payment method, add PayPal button and make modal (non-dismissable)
+                    if ( formdata.payment_method == 'paypal' ){
+                        overlay_text += paypal_form;
+                    } else {
+                        // ability to close message
+                        $(document).on('click keydown', function(e){e.preventDefault();$('.application-form-overlay').remove();});
+                    }
+                    $('#application-form-overlay_text').html(overlay_text);
+                });
+                // invalid input found in form
+                $(document).on('wpcf7invalid', function(e){
+                    $('#application-form-overlay_text').html('<h3>Sorry...</h3><p>There were some problems found with the form. Please correct these and try again.</p>');
+                    $(document).on('click keydown', function(e){e.preventDefault();$('.application-form-overlay').remove();});
+                });
+                // message not sent
+                $(document).on('wpcf7mailfailed', function(){
+                    $('#application-form-overlay_text').html('<h3>Sorry...</h3><p>There was a problem sending mail. Please check your email address and try again.</p>');
+                    $(document).on('click keydown', function(e){e.preventDefault();$('.application-form-overlay').remove();});
+                });
+            }
+        });
+    })(jQuery);
+    </script>
