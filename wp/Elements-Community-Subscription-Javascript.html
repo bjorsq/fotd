@@ -12,8 +12,6 @@
         });
         $('#membership_subscription_other').parents('p').addClass( 'hidden' );
         $('#membership_subscription').on('change', function(){
-            console.log($(this).val());
-            console.log($(this).val().indexOf( 'Other' ));
             if ( $(this).val().indexOf( 'Other' ) !== -1 ) {
                 $('#subscription_other').removeClass( 'hidden' ).find( '.error_text' ).addClass('hidden');
                 $('#membership_subscription_other').removeClass('error').focus();
@@ -22,13 +20,13 @@
                 $('#subscription_other').addClass( 'hidden' );
             }
         });
-        $('#publication_additional').addClass( 'hidden' );
-        $('#publication_print').on( 'click', function(){
-            if ( $('#publication_print').is( ':checked' ) ) {
-                $('#publication_additional').removeClass( 'hidden' );
+        $('#publication_preferences .wpcf7-list-item.last').addClass( 'hidden' );
+        $('#publication_preferences :checkbox').eq( -2 ).on( 'click', function(){
+            if ( $(this).is( ':checked' ) ) {
+                $('#publication_preferences .wpcf7-list-item.last').removeClass( 'hidden' );
             } else {
-                $('#publication_additional_copy').prop('checked', false);
-                $('#publication_additional').addClass( 'hidden' );
+                $('#publication_preferences .wpcf7-list-item.last :checkbox').prop('checked', false);
+                $('#publication_preferences .wpcf7-list-item.last').addClass( 'hidden' );
             }
         });
         var clearForm = function(){
@@ -77,7 +75,7 @@
             var mdon = $('#membership_subscription').val();
             if ( mdon.indexOf( 'Select' ) !== -1 ) {
                 $('#membership_subscription').addClass('error').parents('p').find('.error_text').removeClass('hidden');
-            } else if (mcat.indexOf( 'Other' ) !== -1 ) {
+            } else if (mdon.indexOf( 'Other' ) !== -1 ) {
                 var otheramount = parseInt( $('#membership_subscription_other').val().replace('£', '') );
                 if ( isNaN( otheramount ) || otheramount < 40 ) {
                     $('#membership_subscription_other').addClass('error').parents('p').find('.error_text').removeClass('hidden');

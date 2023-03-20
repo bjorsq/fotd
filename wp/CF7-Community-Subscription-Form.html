@@ -75,25 +75,27 @@
 			£ [number membership_subscription_other id:membership_subscription_other min:40 "40"]
 			<span class="error_text hidden">Please input your Membership Subscription (must be £40 or more).</span>
 		</p>
-		</fieldset>
-        <fieldset><legend>Publication Preferences</legend>
-            <p>I would like:</p>
-            <p>
-                [acceptance publication_pdf id:publication_pdf optional]A PDF copy of quarterly magazine, Yorkshire Dales Review sent to my email[/acceptance]
-            </p>
-            <p>
-                [acceptance publication_print id:publication_print optional]A printed copy of quarterly magazine, Yorkshire Dales Review sent by post[/acceptance]
-            </p>
-            <p id="publication_additional">
-                [acceptance publication_additional_copy id:publication_additional_copy optional]Please send me an additional printed copy of quarterly magazine[/acceptance]
-            </p>
-        </fieldset>
-        <fieldset><legend>Terms &amp; Conditions</legend>
-            <p>
-                [acceptance agree_objectives id:agree_objectives]I confirm this organisation supports the charitable objectives of the Freinds of the Dales[/acceptance]
-            </p>
-        </fieldset>
-        <p>
-            [submit id:apply class:apply "Apply for Community membership"]
+	</fieldset>
+	<fieldset id="payment_fields"><legend>Payment</legend>
+		<p>
+			<label for="payment_method" class="required">Payment method</label>
+			[select* payment_method id:payment_method "Select your preferred payment method..." "PayPal" "Bank Transfer" "Direct Debit" "Cheque" "Telephone"]
+			<span class="error_text hidden">Please select a Payment method.</span>
+		</p>
+		<p class="hidden" id="method_info_text"></p>
+	</fieldset>
+    <fieldset><legend>Publication Preferences</legend>
+		<p>I would like:</p>
+        <p id="publication_preferences">
+		[checkbox publication_preferences id:publication_preferences "A PDF copy of our quarterly magazine, Yorkshire Dales Review sent to my email" "A printed copy of our quarterly magazine, Yorkshire Dales Review sent by post" "Please send me an additional printed copy of our quarterly magazine"]
         </p>
-    </div>
+	</fieldset>
+	<fieldset><legend>Terms &amp; Conditions</legend>
+		<p>
+			[acceptance agree_objectives id:agree_objectives]I confirm this organisation supports the charitable objectives of the Freinds of the Dales[/acceptance]
+		</p>
+	</fieldset>
+	<p>
+		[submit id:apply class:apply "Apply for Community membership"]
+	</p>
+</div>
