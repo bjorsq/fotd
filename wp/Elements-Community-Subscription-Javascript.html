@@ -14,9 +14,13 @@
         $('#membership_subscription').on('change', function(){
             if ( $(this).val().indexOf( 'Other' ) !== -1 ) {
                 $('#subscription_other').removeClass( 'hidden' ).find( '.error_text' ).addClass('hidden');
-                $('#membership_subscription_other').removeClass('error').focus();
+                $('#membership_subscription_other').removeClass('error').val( '40' ).focus();
             } else {
-                $('#membership_subscription_other').val( '40' );
+                if ( $(this).val().indexOf( '£' ) !== -1 ) {
+                    $('#membership_subscription_other').val( $(this).val().substring(1) );
+                } else {
+                    $('#membership_subscription_other').val( '40' );
+                }
                 $('#subscription_other').addClass( 'hidden' );
             }
         });
