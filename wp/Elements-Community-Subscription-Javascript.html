@@ -49,6 +49,9 @@
             if ( $.trim($('#organisation_name').val()) === '' ){
                 $('#organisation_name').addClass('error').parents('p').find('.error_text').removeClass('hidden');
             }
+            if ( $.trim($('#organisation_url').val()) === '' ){
+                $('#organisation_url').addClass('error').parents('p').find('.error_text').removeClass('hidden');
+            }
             // Check Organisation address
             if ( $.trim($('#organisation_address').val()) === '' ){
                 $('#organisation_address').addClass('error').parents('p').find('.error_text').removeClass('hidden');
@@ -58,12 +61,16 @@
             }
 
             // Check name
+            if ( $.trim($('#title').val()) === '' ){
+                $('#title').addClass('error').parents('p').find('.error_text').removeClass('hidden');
+            }
             if ( $.trim($('#first_name').val()) === '' ){
                 $('#first_name').addClass('error').parents('p').find('.error_text').removeClass('hidden');
             }
             if ( $.trim($('#last_name').val()) === '' ){
                 $('#last_name').addClass('error').parents('p').find('.error_text').removeClass('hidden');
             }
+            // Check job title
             if ( $.trim($('#job_title').val()) === '' ){
                 $('#job_title').addClass('error').parents('p').find('.error_text').removeClass('hidden');
             }
@@ -75,6 +82,10 @@
             if ( $.trim($('#emailaddress').val()) === '' ){
                 $('#emailaddress').addClass('error').parents('p').find('.error_text').removeClass('hidden');
             }
+            // Check telephone
+            if ( $.trim($('#telephone').val()) === '' ){
+                $('#telephone').addClass('error').parents('p').find('.error_text').removeClass('hidden');
+            }
             // Check subscription
             var mdon = $('#membership_subscription').val();
             if ( mdon.indexOf( 'Select' ) !== -1 ) {
@@ -85,12 +96,14 @@
                     $('#membership_subscription_other').addClass('error').parents('p').find('.error_text').removeClass('hidden');
                 }
             }
+            // Check payment method
             var paym = $('#payment_method').val();
             var paym_split = paym.split(" ");
             var paym_key = paym_split[0].toLowerCase();
             if ( paym_key === 'select' ){
                 $('#payment_method').addClass('error').parents('p').find('.error_text').removeClass('hidden');
             }
+            // Check errors!
             if (!$('.error').length) {
                 return true;
             } else {

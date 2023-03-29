@@ -18,8 +18,9 @@
             <span class="error_text hidden">Please enter the Organisation's name.</span>
 		</p>
         <p>
-            <label for="organisation_url">Primary online presence e.g. website; social media page</label>
-            [url organisation_url id:organisation_url]
+            <label for="organisation_url" class="required">Primary online presence e.g. website; social media page</label>
+            [url* organisation_url id:organisation_url]
+            <span class="error_text hidden">Please enter the Organisation's primary URL.</span>
         </p>
 		<p>
 			<label for="organisation_address" class="required">Organisation Address</label>
@@ -33,9 +34,10 @@
 		</p>
     </fieldset>
     <fieldset id="contact_details_fields"><legend>Contact Details</legend>
-            <p>
-			<label for="title">Title</label>
-			[text title id:title]
+        <p>
+			<label for="title" class="required">Title</label>
+			[text* title id:title]
+			<span class="error_text hidden">Please enter the organisation contact's title.</span>
 		</p>
 		<p>
 			<label for="first_name" class="required">First name(s)</label>
@@ -58,8 +60,9 @@
 			<span class="error_text hidden">Please enter the organisation contact's email address</span>
 		</p>
 		<p>
-			<label for="telephone">Telephone number</label>
-			[tel telephone id:telephone autocomplete:tel]
+			<label for="telephone" class="required">Telephone number</label>
+			[tel* telephone id:telephone autocomplete:tel]
+			<span class="error_text hidden">Please enter the organisation contact's telephone number</span>
 		</p>
 	</fieldset>
 	<fieldset><legend>Membership</legend>

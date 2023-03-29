@@ -13,8 +13,9 @@
 <div class="application_form individual-subscription">
 	<fieldset id="your_details_fields"><legend>Your Details</legend>
 		<p>
-			<label for="title">Title</label>
-			[text title id:title]
+			<label for="title" class="required">Title</label>
+			[text* title id:title]
+			<span class="error_text hidden">Please enter your title.</span>
 		</p>
 		<p>
 			<label for="first_name" class="required">First name(s)</label>
@@ -42,8 +43,9 @@
 			<span class="error_text hidden">Please enter your postcode.</span>
 		</p>
 		<p>
-			<label for="telephone">Telephone number</label>
-			[tel telephone id:telephone autocomplete:tel]
+			<label for="telephone" class="required">Telephone number</label>
+			[tel* telephone id:telephone autocomplete:tel]
+			<span class="error_text hidden">Please enter your telephone number</span>
 		</p>
 	</fieldset>
 	<p id="is_gift" data-switch-text="Check this box if this is a gift">If this subscription is a gift, please fill out the recipient's details below</p>

@@ -84,6 +84,9 @@
             $('span.error_text').addClass('hidden');
             $('input textarea select').removeClass('error');
             // Check name
+            if ( $.trim($('#title').val()) === '' ){
+                $('#title').addClass('error').parents('p').find('.error_text').removeClass('hidden');
+            }
             if ( $.trim($('#first_name').val()) === '' ){
                 $('#first_name').addClass('error').parents('p').find('.error_text').removeClass('hidden');
             }
@@ -105,6 +108,11 @@
             if ( $.trim($('#postcode').val()) === '' ){
                 $('#postcode').addClass('error').parents('p').find('.error_text').removeClass('hidden');
             }
+            // Check telephone
+            if ( $.trim($('#telephone').val()) === '' ){
+                $('#telephone').addClass('error').parents('p').find('.error_text').removeClass('hidden');
+            }
+            // Check gift and gift aid
             if ($('#is_gift').is(':checked') && $('#gift_aid').is(':checked')){
                 // Can't do both - uncheck
                 $('#is_gift').prop('checked', false);
@@ -133,12 +141,14 @@
                     $('#gift_aid_fields').find('.error_text').removeClass('hidden');
                 }
             }
+            // Check membership category
             var mcat = $('#membership_category').val();
             if ( mcat.indexOf( 'Select' ) !== -1 ) {
                 $('#membership_category').addClass('error').parents('p').find('.error_text').removeClass('hidden');
             } else if (mcat.indexOf( 'Joint' ) !== -1 && $.trim($('#jointname').val()) === '' ) {
                 $('#jointname').addClass('error').parents('p').find('.error_text').removeClass('hidden');
             }
+            // Check payment method
             var paym = $('#payment_method').val();
             var paym_split = paym.split(" ");
             var paym_key = paym_split[0].toLowerCase();
@@ -153,7 +163,7 @@
             }
         };
         // remove the error condition for a field when it gets focus
-        $('input[type=text],input[type=email],textarea,select').on('focus', function(){
+        $('input[type=text],input[type=email],input[type=tel],textarea,select').on('focus', function(){
             if ( $(this).hasClass('error') ) {
                 $(this).removeClass('error');
                 $(this).parents('p').find('.error_text').addClass('hidden');
